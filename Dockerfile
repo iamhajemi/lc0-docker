@@ -19,9 +19,9 @@ RUN pip3 install meson
 
 LABEL "version"="lc0_v0.26.3-client_v29"
 RUN curl -s -L https://github.com/LeelaChessZero/lc0/releases/latest |\
-    egrep -o '/LeelaChessZero/lc0/archive/v.*.tar.gz' |\
-    wget --base=https://github.com/ -O lc0latest.tgz -i - &&\
-    tar xfz lc0latest.tgz && rm lc0latest.tgz && mv lc0* /lc0
+    egrep -o '/LeelaChessZero/lc0/archive/refs/tags/v0.27.0.tar.gz' |\
+    wget --base=https://github.com/ -O v0.27.0.tar.gz -i - &&\
+    tar xfz v0.27.0.tar.gz && rm v0.27.0.tar.gz && mv lc0* /lc0
 WORKDIR /lc0
 RUN CC=clang-6.0 CXX=clang++-6.0 INSTALL_PREFIX=/lc0 \
     ./build.sh release && ls /lc0/bin
