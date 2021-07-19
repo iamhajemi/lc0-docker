@@ -5,8 +5,9 @@ RUN apt-get update &&\
     apt-get clean all
 
 FROM lc0base as botbase
+RUN apt upgrade -y
 RUN apt-get update &&\
-    apt-get install -y python3 &&\
+    apt-get install -y python3.7 &&\
     apt-get clean all
 
 FROM nvidia/cuda:10.0-cudnn7-devel as builder
@@ -43,10 +44,22 @@ RUN apt-get update &&\
     apt-get install -y python3-venv
 RUN git clone https://github.com/careless25/lichess-bot.git /lcbot
 WORKDIR /lcbot
+
+
+# https://onedrive.live.com/download?cid=547CCA53C39C1EA1&resid=547CCA53C39C1EA1%21612&authkey=AHOF5lyRIHMk7Ys
+
+
+
+RUN apt-get update && apt-get install -y wget python3 python3-pip p7zip-full
+RUN wget --no-check-certificate "https://onedrive.live.com/download?cid=547CCA53C39C1EA1&resid=547CCA53C39C1EA1%21613&authkey=AGOqbMI3aSGCP8Q" -O r.7z
+RUN 7z e r.7z -y
+RUN rm r.7z
+RUN python3 -V
 RUN python3 -m venv .venv &&\
     . .venv/bin/activate &&\
     pip3 install wheel &&\
-    pip3 install -r requirements.txt
+    python3 -m pip install --no-cache-dir -r requirements.txt
+    
 
 FROM botbase as lcbot
 COPY --from=builder /lc0/bin /lc0/bin
